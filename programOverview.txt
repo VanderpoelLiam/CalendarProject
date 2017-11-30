@@ -1,0 +1,42 @@
+TODO CASES:
+    deadlines:
+        - less two wks
+        - greater/equal two wks -> put event in calendar at deadline,
+            update when deadline is less than two wks
+    timespan:
+        - less/equal 50 min
+        - greater 50 min -> break up into todos less/equal 50 min
+
+    -> 3 possible cases:
+        - less two wks & - less/equal 50 min
+        - less two wks & - greater 50 min
+        - greater/equal two wks
+
+SCHEDUELING CASES:
+    INVARIANTS:
+    - 5 min buffer between events
+    - allow 1 hr lunch
+    - Scheduling during Event or Task
+    - "         " before 06:00
+    - "         " after 22:00
+
+    MILD INVARIANTS:
+    (in order of preferred violation)
+    - don't schedule Task from same Todo consecutively
+    - "             " on weekends
+    - "             " after 18:00
+    - "             " before 09:00
+
+SCHEDUELING PRINCIPLES:
+    (1) Todo w/ earlier deadlines get earlier slots
+    (2) Must scheduele enough Task to satisfy Todo.timespan before
+        Todo.deadline
+        - if not possible can violate MILD INVARIANTS, in order of:
+        (1) after 18:00
+        (2) before 9:00
+        (3) on weekends
+        - raise InsufficientTimeException if still not possible to scheduele
+        sufficient Task
+    (3) Can move all Task to satisfy (1) & (2)
+    (4) Can store Todo w/ deadline greater than two wks then scheduele
+        them once deadline less/equal two wks
